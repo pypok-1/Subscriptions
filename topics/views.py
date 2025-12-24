@@ -12,11 +12,16 @@ from .models import Topic, TopicActivity
 def topics_view(request: HttpRequest) -> HttpResponse:
     topics_key = f"user:{request.user.id}:topics"
     data = cache.get(f"user:{request.user.id}:topics")
+
     if data is None:
         data = request.user.topics.all()
         cache.set(topics_key, data, timeout=60)
 
-    return render(request, "topics/topics.html", {"user_topics": data})
+    all_topics = Topic.objects.all()
+    return render(request, "topics/topics.html",{
+        "user_topics": data,
+        "all_topics": all_topics,
+    })
 
 
 @login_required
@@ -31,4 +36,17 @@ def unsubscribe_view(request: HttpRequest, id: int) -> HttpResponse:
     topic = get_object_or_404(Topic, id=id)
     topic.subscribers.remove(request.user)
     return redirect("topics_list")
+
+
+@login_required
+def create_topic_view(request: HttpRequest) -> HttpResponse:
+
+    if request.method == 'POST':
+        topic_name = request.POST.get('name')
+        if topic_name:
+            Topic.objects.create(name=topic_name)
+    return redirect("topics_list")
+
+
+
 
