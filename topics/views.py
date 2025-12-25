@@ -48,5 +48,6 @@ def create_topic_view(request: HttpRequest) -> HttpResponse:
 
 def delete_topic_view(request: HttpRequest, id:int) -> HttpResponse:
     topic = get_object_or_404(Topic, id=id)
-        topic.delete()
-        return redirect('topics_view')
+    topic.delete()
+    return redirect('topics_view')
+
