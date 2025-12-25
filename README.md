@@ -1,1 +1,1 @@
-### <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZhcWdyczl3ZzhwYXV1NWN6Z3J0eTh4OHV6NmJqczFid2Nnb3R2ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wZD7RX1fHKsU7FckHH/giphy.gif" width="50"> Django Subscriptions Project
+### <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpwaXlyMGJ0MndnbnhzZ3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6JmVwPXYxX3N0aWNrZXJzX3NlYXJjaCZjdD1z/kZKgpxvLnq27UmPiB7/giphy.gif" width="50"> Django Subscriptions Project
