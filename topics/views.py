@@ -1,17 +1,16 @@
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
 
+from .forms import TopicForm
 from .models import Topic, TopicActivity
 
 
 @login_required
 def topics_view(request: HttpRequest) -> HttpResponse:
     topics_key = f"user:{request.user.id}:topics"
-    data = cache.get(f"user:{request.user.id}:topics")
+    data = cache.get(topics_key)
 
     if data is None:
         data = request.user.topics.all()
@@ -35,18 +34,23 @@ def subscribe_view(request: HttpRequest, id: int) -> HttpResponse:
 def unsubscribe_view(request: HttpRequest, id: int) -> HttpResponse:
     topic = get_object_or_404(Topic, id=id)
     topic.subscribers.remove(request.user)
-    return redirect("topics_list")
+    return redirect("topics_view")
 
 
 @login_required
 def create_topic_view(request: HttpRequest) -> HttpResponse:
-
     if request.method == 'POST':
-        topic_name = request.POST.get('name')
-        if topic_name:
-            Topic.objects.create(name=topic_name)
-    return redirect("topics_list")
+        form = TopicForm(request.POST)
+        if form.is_valid():
+            topic = form.save(commit=False)
+            topic.author = request.user
+            topic.save()
+        return redirect('topics_view')
 
 
-
-
+@login_required
+def delete_topic_view(request: HttpRequest, id:int) -> HttpResponse:
+    topic = get_object_or_404(Topic, id=id)
+    if topic.author == request.user:
+        topic.delete()
+        return redirect('topics_view')
