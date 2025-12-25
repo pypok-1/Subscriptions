@@ -1,1 +1,1 @@
-Django Subscriptions
+### <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZhcWdyczl3ZzhwYXV1NWN6Z3J0eTh4OHV6NmJqczFid2Nnb3R2ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wZD7RX1fHKsU7FckHH/giphy.gif" width="50"> Django Subscriptions Project
