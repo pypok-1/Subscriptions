@@ -1,5 +1,8 @@
-from django.apps import AppConfig
+from django import forms
+from .models import Topic
 
 
-class TopicsConfig(AppConfig):
-    name = 'topics'
+class TopicForm(forms.ModelForm):
+    class Meta:
+        model = Topic
+        fields = ['name']
