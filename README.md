@@ -1,1 +1,15 @@
-### <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpwaXlyMGJ0MndnbnhzZ3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6JmVwPXYxX3N0aWNrZXJzX3NlYXJjaCZjdD1z/kZKgpxvLnq27UmPiB7/giphy.gif" width="50"> Django Subscriptions Project
+# Django Subscriptions: Signals & Cache 🚀
+
+<p align="left">
+  <img src="https://media.giphy.com/media/5a50CAL0vy0dH9A0wH/giphy.gif" width="80" alt="cat-gif">
+</p>
+
+---
+
+## 📝 Описание
+
+## 🚀 Основные фичи:
+- **Signals Power**: `post_save`, `post_delete` и `m2m_changed` управляют данными без участия Views.
+- **Custom Signal**: Реализован собственный сигнал `topic_changed` для логирования.
+- **Speed**: Использование `prefetch_related` и кеширования для мгновенного отклика.
+- **UI**: Современный "Agency Style" дизайн.
