@@ -6,7 +6,6 @@ def add_topics(apps, schema_editor):
     Topic = apps.get_model('topics', 'Topic')
     topics_data = ['Python', 'Django', 'DevOps']
 
-    # 4. Создаём каждую тему
     for topic_name in topics_data:
         Topic.objects.get_or_create(name=topic_name)
 
@@ -23,4 +22,5 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunPython(add_topics, remove_topics),
+
     ]
