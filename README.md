@@ -6,7 +6,6 @@
 
 ---
 
-## 📝 Описание
 
 ## 🚀 Основные фичи:
 - **Signals Power**: `post_save`, `post_delete` и `m2m_changed` управляют данными без участия Views.
