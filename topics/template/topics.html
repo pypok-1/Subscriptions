@@ -1,10 +1,221 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Topics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #10b981;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        /* Форма создания */
+        .create-form {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-size: 1rem;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        /* Кнопки */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #e2e8f0;
+            color: var(--text-muted);
+        }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+        .btn-danger {
+            background: #fff1f2;
+            color: var(--danger);
+            padding: 8px 16px;
+        }
+        .btn-danger:hover { background: var(--danger); color: white; }
+
+        .btn-success { background: var(--success); color: white; }
+
+        /* Карточки топиков */
+        .topics-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .topic-card {
+            background: var(--card-bg);
+            padding: 20px 24px;
+            border-radius: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .topic-card:hover {
+            transform: scale(1.01);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .topic-info h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: var(--text-main);
+        }
+
+        .topic-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            background: #f1f5f9;
+            border-radius: 16px;
+            border: 2px dashed #cbd5e1;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+
+        .admin-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .admin-link:hover { color: var(--primary); }
+    </style>
 </head>
 <body>
+
+<div class="container">
+    <header>
+        <h1>Explore Topics</h1>
+        <p style="color: var(--text-muted)">Join the discussion or create your own community</p>
+    </header>
+
+    <form class="create-form" method="POST" action="{% url 'create_topic_view' %}">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Enter topic name..." required>
+        <button type="submit" class="btn btn-primary">Create Topic</button>
+    </form>
+
+    <div class="topics-grid">
+        {% for topic in topics %}
+            <div class="topic-card">
+                <div class="topic-info">
+                    <h3>{{ topic.name }}</h3>
+                </div>
+
+                <div class="topic-actions">
+                    {% if request.user.is_authenticated %}
+                        {% if request.user in topic.subscribers.all %}
+                            <a href="{% url 'unsubscribe_view' topic.id %}" class="btn btn-outline" style="border-color: var(--success); color: var(--success);">
+                                ✓ Subscribed
+                            </a>
+                        {% else %}
+                            <a href="{% url 'subscribe_view' topic.id %}" class="btn btn-primary">
+                                Subscribe
+                            </a>
+                        {% endif %}
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'delete_topic_view' topic.id %}" style="margin:0;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        {% empty %}
+            <div class="empty-state">
+                <p>No topics have been created yet. Be the first!</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <footer>
+        <a href="/admin/" class="admin-link">Go to Admin Panel →</a>
+    </footer>
+</div>
 
 </body>
 </html>
