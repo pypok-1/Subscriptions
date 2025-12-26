@@ -12,3 +12,10 @@
 - **Custom Signal**: Реалізовано власний сигнал `topic_changed` для логування.
 - **Speed**: Використання `prefetch_related` і кешування для миттєвої реакції.
 - **UI**: Сучасний дизайн "Agency Style".( Не я )
+
+  
+---
+
+### <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaDBlemRibzRwcXBmMzFza21mZ2FuNGxpY3dpZW12ODVpM29nbjVjZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/X3fYOZACminuC3yghR/giphy.gif" width="50"> TEMPLATE
+
+### <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnVjNnliZzZ0bHUyM2U1amRrOXpjMjc1Mzd5anlpNms3Z2RiNjUzOCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/z5sGaSzuuIwlKVot2X/giphy.gif" width="50"> TEMPLATES
