@@ -1,4 +1,4 @@
-# Django Subscriptions: Signals & Cache 🚀
+# Django Subscriptions: Signals + Cache 🚀
 
 <p align="left">
   <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHprN3psMzdubzJ2c25qZ2RyMWNzODFraW84ZWEwdndhbW1ueXl2eiZlcD12MV9naWZzX3RyZW5kaW5nJmN0PWc/wZD7RX1fHKsU7FckHH/giphy.gif" width="80" alt="cat-gif">
