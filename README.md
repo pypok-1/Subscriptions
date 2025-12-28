@@ -23,7 +23,7 @@ SORRY
 
 ---
 # 🚀 Как запустить?
- -git clone github.com
- -python manage.py migrate
- -python manage.py runserver
+ 1) git clone github.com
+ 2) python manage.py migrate
+ 3) python manage.py runserver
 
