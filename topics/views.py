@@ -9,60 +9,38 @@ from .forms import TopicForm
 from .models import Topic
 
 
-@login_required 
-def topics_view(request: HttpRequest) -> HttpResponse:
-    user = request.user
+@login_required
+def topics_view(request):
+    topics_key = f"user:{request.user.id}:topics"
 
-    topics_key = f'user:{user.id}:topics'
-    topic_ids = cache.get(topics_key)
+    topics_us = cache.get(topics_key)
 
-    if topic_ids is None:
-        topic_ids = list(Topic.objects.filter(subscribers=user).values_list('id', flat=True))
-        cache.set(topics_key, topic_ids, timeout=60)
+    if topics_us is None:
+        topics_us = list(request.user.topics.all())
+        cache.set(topics_key, topics_us, 60)
+        print("бази даних")
+    else:
+        print("кешу")
 
-    topics = Topic.objects.filter(id__in=topic_ids).order_by('-id')
+    all_topics = Topic.objects.all()
 
-    paginator = Paginator(topics, 5)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    all_topics = Topic.objects.exclude(id__in=topic_ids).order_by('-id')[:10]
-
-    return render(request, 'topics/topics.html', {
-        'page_obj': page_obj,
-        'all_topics': all_topics,
+    return render(request, "topics/topics.html", {
+        "all_topics": all_topics,
+        "topics_us": topics_us
     })
 
 
 @login_required
-def create_topic_view(request: HttpRequest) -> HttpResponse:
+def create_topic_view(request):
     if request.method == "POST":
-        form = TopicForm(request.POST)
-        if form.is_valid():
-            topic = form.save(commit=False)
-            topic.created_by = request.user
-            topic.save()
-            topic.subscribers.add(request.user)
-            return redirect('topics_view')
-    else:
-        form = TopicForm()
-
-    return render(request, 'topics/create_topic.html', {'form': form})
-
-
-@login_required
-def delete_topic_view(request: HttpRequest, id: int) -> HttpResponse:
-    topic = get_object_or_404(Topic, id=id)
-
-    if topic.created_by == request.user or request.user.is_staff:
-        if request.method == "POST":
-            topic.delete()
-
+        topic_name = request.POST.get("name", "")
+        if topic_name:
+            Topic.objects.get_or_create(name=topic_name)
     return redirect("topics_view")
 
 
 @login_required
-def subscribe_view(request: HttpRequest, id: int) -> HttpResponse:
+def subscribe_view(request, id):
     if request.method == "POST":
         topic = get_object_or_404(Topic, id=id)
         topic.subscribers.add(request.user)
@@ -70,8 +48,15 @@ def subscribe_view(request: HttpRequest, id: int) -> HttpResponse:
 
 
 @login_required
-def unsubscribe_view(request: HttpRequest, id: int) -> HttpResponse:
+def unsubscribe_view(request, id):
     if request.method == "POST":
         topic = get_object_or_404(Topic, id=id)
         topic.subscribers.remove(request.user)
+    return redirect("topics_view")
+
+
+@login_required
+def delete_topic_view(request, id):
+    if request.method == "POST":
+        Topic.objects.filter(id=id).delete()
     return redirect("topics_view")
