@@ -10,17 +10,13 @@ def add_topics(apps, schema_editor):
         Topic.objects.get_or_create(name=topic_name)
 
 
-def remove_topics(apps, schema_editor):
-    Topic = apps.get_model('topics', 'Topic')
-    Topic.objects.filter(name__in=['Python', 'Django', 'DevOps']).delete()
-
-
 class Migration(migrations.Migration):
     dependencies = [
         ('topics', '0001_initial'),
     ]
 
     operations = [
-        migrations.RunPython(add_topics, remove_topics),
+        migrations.RunPython(add_topics),
 
     ]
+
